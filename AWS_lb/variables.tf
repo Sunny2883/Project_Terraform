@@ -20,3 +20,4 @@ variable "target_type" {
 variable "vpc_id" {
   type = string
 }
+

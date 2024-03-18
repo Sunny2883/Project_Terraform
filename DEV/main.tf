@@ -11,22 +11,22 @@ provider "aws" {
 }
 
 module "vpc" {
-  source = "./AWS_VPC"
+  source = "../AWS_VPC"
   cidr_block = "192.168.0.0/16"
   cidr_block_public_subnet= ["192.168.1.0/24", "192.168.2.0/24"]
   azs = ["ap-south-1a", "ap-south-1b"]
-  vpc_name = "VPC_main"
+  vpc_name = "VPC_main_dev"
 }
 
 module "security_group" {
-  source = "./Security_group"
+  source = "../Security_group"
   vpc_id = module.vpc.vpc_id
-  Security_group_name = "ecs-security-group"
+  Security_group_name = "ecs-security-group_dev"
 }
 
 module "aws_lb" {
-  source = "./AWS_lb"
-  name = "aws-lb"
+  source = "../AWS_lb"
+  name = "aws-lb-dev"
   subnets = module.vpc.subnet
   security_groups = [module.security_group.security_group_id]
   target_type = "instance"
@@ -34,7 +34,7 @@ module "aws_lb" {
 }
 
 module "asg" {
-  source = "./AWS_ASG"
+  source = "../AWS_ASG"
   iamge_id = "ami-0253000eaaef5fbc5"
   depends_on = [ module.aws_lb ]
   instance_type = "t3.small"
@@ -53,22 +53,22 @@ module "asg" {
 }
 
 module "ecs" {
-  source = "./AWS_ECS"
-  cluster_name = "project_cluster"
+  source = "../AWS_ECS"
+  cluster_name = "project_cluster_dev"
   family_name_task1 = "project-task-family"
   family_name_task2 = "backend_task_family"
   image_url = "730335487196.dkr.ecr.ap-south-1.amazonaws.com/project_repo:latest"
   min_capacity=1
-  task_name="project_task_definition"
+  task_name="backend_ecs_service_dev"
   max_capacity = 1
   cpu = 1000
   memory = 1000
   backend_image_url = "730335487196.dkr.ecr.ap-south-1.amazonaws.com/project_repo_dotnet:latest"
-  backend_task_name = "dotnet_app"
+  backend_task_name = "dotnet_app_dev"
   backend_cpu = 300
   backend_memory = 300
   backend_min_capacity = 1
-  ecs_service1 = "ecs_service"
-  ecs_service2 = "backend_ecs_service"
+  ecs_service1 = "ecs_service_dev"
+  ecs_service2 = "backend_ecs_service_dev"
   target_group_arn = module.aws_lb.target_group_arn
 }

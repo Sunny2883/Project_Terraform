@@ -18,10 +18,6 @@ variable "task_name" {
 }
 
 
-
-
-
-
 variable "min_capacity" {
   description = "Minimum capacity for Auto Scaling Group"
 }
@@ -52,4 +48,24 @@ variable "backend_min_capacity" {
 
 variable "target_group_arn" {
   type = string
+}
+
+
+variable "family_name_task1" {
+  type = string
+}
+
+variable "family_name_task2" {
+  type = string
+}
+
+variable "ecs_service1" {
+  type = string
+}
+
+variable "ecs_service2" {
+  type = string
+}
+variable "cluster_name" {
+  
 }

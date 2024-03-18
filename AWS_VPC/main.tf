@@ -4,9 +4,9 @@ provider "aws" {
 resource "aws_vpc" "VPC_main" {
   cidr_block       = var.cidr_block
   instance_tenancy = "default"
-
+  
   tags = {
-    Name = "VPC_main"
+    Name = var.vpc_name
   }
 }
 

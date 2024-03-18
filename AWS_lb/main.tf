@@ -8,6 +8,11 @@ resource "aws_alb" "name" {
   enable_deletion_protection = false
 }
 
+
+
+
+
+
 resource "aws_alb_target_group" "this" {
   target_type = var.target_type
   name        = "ecs-tg"

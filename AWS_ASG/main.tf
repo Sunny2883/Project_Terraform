@@ -4,6 +4,7 @@ resource "aws_launch_template" "tempelate_asg" {
   instance_type = var.instance_type
   user_data = var.user_data
   key_name = var.keyname
+  security_group_names = [ var.security_group_id ]
   iam_instance_profile {
     name = "ecsInstanceRole"
   }

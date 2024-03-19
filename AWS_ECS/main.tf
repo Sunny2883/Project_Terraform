@@ -12,7 +12,7 @@ resource "aws_ecs_task_definition" "project_task_definition" {
       portMappings  = [
         {
           containerPort = 4200
-          hostPort      = 0
+          hostPort      = 4200
         }
       ]
     }
@@ -33,7 +33,7 @@ resource "aws_ecs_task_definition" "backend_task_definition" {
       portMappings  = [
         {
           containerPort = 8080
-          hostPort      = 0
+          hostPort      = 8080
         }
       ]
     }

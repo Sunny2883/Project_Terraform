@@ -70,5 +70,10 @@ module "ecs" {
   backend_min_capacity = 1
   ecs_service1 = "ecs_service"
   ecs_service2 = "backend_ecs_service"
-  target_group_arn = module.aws_lb.target_group_arn
+  target_group_arn_1 = module.aws_lb.target_group_arn_1
+  securitygroupid_1 = module.security_group.security_group_id
+  securitygroupid_2 = module.security_group.security_group_id
+  subnetid_1 = module.vpc.subnet
+  subnetid_2 = module.vpc.subnet
+  target_group_arn_2 = module.aws_lb.backendtarget_arn
 }

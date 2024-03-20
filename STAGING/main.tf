@@ -39,7 +39,7 @@ module "asg" {
   depends_on = [ module.aws_lb ]
   instance_type = "t3.small"
   asg_name = "asg_for_project_staging"
-  alb_arn = module.aws_lb.target_group_arn
+  alb_arn = module.aws_lb.lb_arn
   min_size = 0
   max_size = 1
   desired_capacity = 1
@@ -48,7 +48,7 @@ module "asg" {
   security_group_id = module.security_group.security_group_id
   subnet = module.vpc.subnet
   user_data = filebase64("./userdata.sh")
-  target_group_arn = module.aws_lb.target_group_arn
+  target_group_arn = module.aws_lb.target_group_arn_1
   keyname = "projectKey"
 }
 
@@ -70,5 +70,10 @@ module "ecs" {
   backend_min_capacity = 1
   ecs_service1 = "ecs_service_staging"
   ecs_service2 = "backend_ecs_service_staging"
-  target_group_arn = module.aws_lb.target_group_arn
+  target_group_arn_1 = module.aws_lb.target_group_arn_1
+  securitygroupid_1 = module.security_group.security_group_id
+  securitygroupid_2 = module.security_group.security_group_id
+  subnetid_1 = module.vpc.subnet
+  subnetid_2 = module.vpc.subnet
+  target_group_arn_2 = module.aws_lb.backendtarget_arn
 }

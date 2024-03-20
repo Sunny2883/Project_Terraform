@@ -50,9 +50,18 @@ resource "aws_ecs_service" "ecs_service" {
   name            = var.ecs_service1
   cluster         = aws_ecs_cluster.project_cluster.arn
   task_definition = aws_ecs_task_definition.project_task_definition.arn
-
+  
   desired_count   = var.min_capacity
+    network_configuration {
+    security_groups = [var.securitygroupid_1]
+    subnets         = var.subnetid_1
+  }
 
+    load_balancer {
+    target_group_arn = var.target_group_arn_1
+    container_name   = var.task_name
+    container_port   = 4200
+  }
    
   
 }
@@ -60,9 +69,19 @@ resource "aws_ecs_service" "backend_ecs_service" {
   name            = var.ecs_service2
   cluster         = aws_ecs_cluster.project_cluster.arn
   task_definition = aws_ecs_task_definition.backend_task_definition.arn
-  
   desired_count   = var.backend_min_capacity
   
+    network_configuration {
+    security_groups = [var.securitygroupid_2]
+    subnets         = var.subnetid_2
+  }
+
+    load_balancer {
+    target_group_arn = var.target_group_arn_2
+    container_name   = var.backend_task_name
+    container_port   = 8080
+  }
+
   
 }
 

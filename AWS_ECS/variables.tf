@@ -46,7 +46,7 @@ variable "backend_min_capacity" {
   type = string
 }
 
-variable "target_group_arn" {
+variable "target_group_arn_2" {
   type = string
 }
 
@@ -68,4 +68,24 @@ variable "ecs_service2" {
 }
 variable "cluster_name" {
   
+}
+
+variable "securitygroupid_1" {
+  type = string
+}
+
+variable "subnetid_1" {
+  type = list(string)
+}
+
+variable "securitygroupid_2" {
+  type = string
+}
+
+variable "subnetid_2" {
+ type = list(string)
+}
+
+variable "target_group_arn_1" {
+  type = string
 }

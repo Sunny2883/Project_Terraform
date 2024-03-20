@@ -23,10 +23,12 @@ resource "aws_alb_target_group" "this" {
 }
 
 resource "aws_lb_target_group" "backend_target_group" {
+  target_type = var.target_type
   name     = "backend-target-group"
   port     = 8080
   protocol = "HTTP"
   vpc_id   = var.vpc_id
+  
 }
 
 resource "aws_lb_listener" "listener" {
@@ -37,7 +39,9 @@ resource "aws_lb_listener" "listener" {
   default_action {
     type             = "forward"
     target_group_arn = aws_alb_target_group.this.arn
+    
   }
 }
+
 
 

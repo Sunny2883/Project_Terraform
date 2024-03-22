@@ -24,7 +24,7 @@ resource "aws_autoscaling_group" "bar" {
   desired_capacity          = var.desired_capacity
   force_delete              = true
   vpc_zone_identifier = var.subnet
-  target_group_arns = [var.target_group_arn]
+  target_group_arns = var.target_group_arn
   
 launch_template {
     id      = aws_launch_template.tempelate_asg.id
@@ -33,7 +33,7 @@ launch_template {
   }
 }
 
-resource "aws_autoscaling_attachment" "this" {
+resource "aws_autoscaling_attachment" "autoscalingattachment" {
   autoscaling_group_name = aws_autoscaling_group.bar.id
-  lb_target_group_arn    = var.alb_arn
+  lb_target_group_arn =    var.targetgrouparn
 }

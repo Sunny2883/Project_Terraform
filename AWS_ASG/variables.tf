@@ -45,8 +45,12 @@ variable "user_data" {
   type = string
 }
 variable "target_group_arn" {
-  type = string
+  type = list(string)
 }
 variable "keyname" {
+  type = string
+}
+
+variable "targetgrouparn" {
   type = string
 }

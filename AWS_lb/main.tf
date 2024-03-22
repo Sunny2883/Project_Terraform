@@ -1,4 +1,8 @@
-resource "aws_alb" "name" {
+# resource "aws_acm_certificate" "certificate" {
+#   # ...
+# }
+
+resource "aws_lb" "loadbalancer" {
   name               = var.name
   internal           = false
   load_balancer_type = "application"
@@ -8,40 +12,46 @@ resource "aws_alb" "name" {
   enable_deletion_protection = false
 }
 
-
-
-
-
-
-resource "aws_alb_target_group" "this" {
+resource "aws_lb_target_group" "targetgroup1" {
   target_type = var.target_type
-  name        = "ecs-tg"
-  protocol    = "HTTP"
+  name        = "targetgroup1"
+  protocol    = "HTTPS"
   vpc_id      = var.vpc_id
   port        = 4200
-  
 }
 
-resource "aws_lb_target_group" "backend_target_group" {
+resource "aws_lb_target_group" "backendtargetgroup" {
   target_type = var.target_type
-  name     = "backend-target-group"
-  port     = 8080
-  protocol = "HTTP"
-  vpc_id   = var.vpc_id
-  
+  name        = "backendtargetgroup"
+  port        = 8080
+  protocol    = "HTTP"
+  vpc_id      = var.vpc_id
 }
 
 resource "aws_lb_listener" "listener" {
-  load_balancer_arn = aws_alb.name.arn
-  port              = 80
-  protocol          = "HTTP"
+  load_balancer_arn = aws_lb.loadbalancer.arn
+  port              = 4200
+  protocol          = "HTTPS"
+  certificate_arn   = "arn:aws:iam::48xxxxxxx:server-certificate/certifcate"
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_alb_target_group.this.arn
-    
+    target_group_arn = aws_lb_target_group.targetgroup1.arn
   }
 }
 
+resource "aws_lb_listener" "listener2" {
+  load_balancer_arn = aws_lb.loadbalancer.arn
+  port              = 8080  
+  protocol          = "HTTP"
+  
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.backendtargetgroup.arn
+  }
+}
 
-
+# resource "aws_lb_listener_certificate" "certificate" {
+#   listener_arn    = aws_lb_listener.listener.arn
+#   certificate_arn = aws_acm_certificate.certificate.arn
+# }

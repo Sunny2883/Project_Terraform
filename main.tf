@@ -15,7 +15,7 @@ module "vpc" {
   cidr_block = "192.168.0.0/16"
   cidr_block_public_subnet= ["192.168.1.0/24", "192.168.2.0/24"]
   azs = ["ap-south-1a", "ap-south-1b"]
-  vpc_name = "VPC_main"
+  vpc_name = "mainvpc"
 }
 
 module "security_group" {
@@ -26,7 +26,7 @@ module "security_group" {
 
 module "aws_lb" {
   source = "./AWS_lb"
-  name = "aws-lb"
+  name = "loadbalancer"
   subnets = module.vpc.subnet
   security_groups = [module.security_group.security_group_id]
   target_type = "instance"
@@ -39,7 +39,7 @@ module "asg" {
   depends_on = [ module.aws_lb ]
   instance_type = "t3.small"
   asg_name = "asg_for_project"
-  alb_arn = module.aws_lb.target_group_arn
+  alb_arn = module.aws_lb.lb_arn
   min_size = 0
   max_size = 1
   desired_capacity = 1
@@ -48,8 +48,9 @@ module "asg" {
   security_group_id = module.security_group.security_group_id
   subnet = module.vpc.subnet
   user_data = filebase64("./userdata.sh")
-  target_group_arn = module.aws_lb.target_group_arn
+  target_group_arn = [module.aws_lb.backendtarget_arn, module.aws_lb.target_group_arn_1]
   keyname = "projectKey"
+  targetgrouparn = module.aws_lb.target_group_arn_1
 }
 
 module "ecs" {
@@ -71,9 +72,5 @@ module "ecs" {
   ecs_service1 = "ecs_service"
   ecs_service2 = "backend_ecs_service"
   target_group_arn_1 = module.aws_lb.target_group_arn_1
-  securitygroupid_1 = module.security_group.security_group_id
-  securitygroupid_2 = module.security_group.security_group_id
-  subnetid_1 = module.vpc.subnet
-  subnetid_2 = module.vpc.subnet
   target_group_arn_2 = module.aws_lb.backendtarget_arn
 }

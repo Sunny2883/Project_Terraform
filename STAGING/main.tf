@@ -50,6 +50,7 @@ module "asg" {
   user_data = filebase64("./userdata.sh")
   target_group_arn = module.aws_lb.target_group_arn_1
   keyname = "projectKey"
+  targetgrouparn = module.aws_lb.target_group_arn_1
 }
 
 module "ecs" {

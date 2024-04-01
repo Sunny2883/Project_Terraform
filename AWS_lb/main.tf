@@ -32,7 +32,6 @@ resource "aws_lb_listener" "listener" {
   load_balancer_arn = aws_lb.loadbalancer.arn
   port              = 4200
   protocol          = "HTTPS"
-  certificate_arn   = "arn:aws:iam::48xxxxxxx:server-certificate/certifcate"
 
   default_action {
     type             = "forward"

@@ -33,7 +33,7 @@ resource "aws_lb_target_group" "backendtargetgroup" {
   target_type = var.target_type
   name        = "backendtargetgroup"
   port        = 8080
-  protocol    = "HTTP"
+  protocol    = "HTTPS"
   vpc_id      = var.vpc_id
 }
 
@@ -41,7 +41,7 @@ resource "aws_lb_listener" "listener" {
   load_balancer_arn = aws_lb.loadbalancer.arn
   port              = 4200
   protocol          = "HTTPS"
-
+  certificate_arn = "arn:aws:acm:ap-south-1:730335487196:certificate/a7673071-3942-4afe-909a-99600f789c5e"
   default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.targetgroup1.arn
@@ -50,8 +50,9 @@ resource "aws_lb_listener" "listener" {
 
 resource "aws_lb_listener" "listener2" {
   load_balancer_arn = aws_lb.loadbalancer.arn
-  port              = 8080  
-  protocol          = "HTTP"
+  port              = 8080 
+  protocol          = "HTTPS"
+  certificate_arn = "arn:aws:acm:ap-south-1:730335487196:certificate/a7673071-3942-4afe-909a-99600f789c5e"
   
   default_action {
     type             = "forward"
